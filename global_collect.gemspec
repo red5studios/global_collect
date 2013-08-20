@@ -4,7 +4,7 @@ require 'global_collect/version'
 
 Gem::Specification.new do |s|
   s.name = %q{global_collect}
-  s.version = "0.5.3" #{}"#{GlobalCollect::VERSION}.#{ENV['GO_PIPELINE_COUNTER'] || 'dev'}"
+  s.version = "0.5.4" #{}"#{GlobalCollect::VERSION}.#{ENV['GO_PIPELINE_COUNTER'] || 'dev'}"
   s.authors = ['Timon Karnezos', 'ThoughtWorks']
   s.date = '2010-11-02'
   s.summary = 'A Ruby client to the Global Collect API'
