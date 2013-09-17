@@ -11,6 +11,7 @@ module GlobalCollect::RequestModels::InsertOrderWithPayment
     end
     # WDL §5.28.1 TABLE 106 specifies the full list of possible fields
     def fields
+      super    
     end
   end
 end

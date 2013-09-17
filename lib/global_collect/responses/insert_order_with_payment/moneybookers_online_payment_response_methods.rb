@@ -18,7 +18,12 @@ module GlobalCollect::Responses::InsertOrderWithPayment
       "FRAUD CODE"           ,
       "FRAUD NEURAL"         ,
       "FRAUD RCF"            ,
-      "AUTHORISATION CODE"
+      "AUTHORISATION CODE"   ,
+      "FORM METHOD"          ,
+      "FORM ACTION"          ,
+      "REF"                  ,
+      "MAC"                  ,
+      "RETURN MAC"      
     ].each do |meth|
       define_method meth.downcase.gsub(/\s+/, "_") do
         row[meth.gsub(/\s+/, "")]
