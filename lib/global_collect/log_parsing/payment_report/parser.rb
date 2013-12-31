@@ -77,7 +77,7 @@ module GlobalCollect::LogParsing::PaymentReport
       end
 
       pr.data_records(:optional => true) do |d|
-        d.trap { |line| line =~ /^[X,-,+]/ }
+        d.trap { |line| line =~ /^[X,\-,+]/ }
         d.template :record_info
         DATA_FIELDS.each_with_index do |field, index|
           make_column(d, field, :group => data_group(index))
