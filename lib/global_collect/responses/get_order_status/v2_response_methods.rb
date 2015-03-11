@@ -43,7 +43,7 @@ module GlobalCollect::Responses::GetOrderStatus
         "XID"
       ].each do |meth|
         define_method meth.downcase.gsub(/\s+/, "_") do
-          status_hash[meth.gsub(/\s+/, "")]
+          status_hash[meth.gsub(/\s+/, "")] rescue nil
         end
       end
       
