@@ -1,3 +1,5 @@
+require 'curb'
+
 # -*- encoding : utf-8 -*-
 module GlobalCollect
   class ApiClient
@@ -27,10 +29,19 @@ module GlobalCollect
       
       response = nil
       request_time = Benchmark.realtime do
-        response = self.class.post(@service_url,
-          :body     => xml,
-          :timeout  => DEFAULT_TIMEOUT
-        )
+
+        # Use Curl
+        response = Curl::Easy.new
+        response.url = @service_url
+        response.headers['Content-Type'] = 'text/xml'
+        response.http_post(xml)
+
+        # Use HTTParty/Net::HTTP
+        # Warning! This causes SSL v3 handshake error with GC using Ruby >= 1.9.3-p550 as of June 2015)
+        # response = self.class.post(@service_url,
+        #   :body     => xml,
+        #   :timeout  => DEFAULT_TIMEOUT
+        # )
       end
 
       unless response
@@ -38,11 +49,15 @@ module GlobalCollect
         GlobalCollect.wire_logger.error(error_message)
         raise error_message
       end
-      GlobalCollect.wire_logger.info("RESP [#{request.action} v#{request.version}] => #{response.code} - #{request_time} s - body:\n#{response.body}")
+      # GlobalCollect.wire_logger.info("RESP [#{request.action} v#{request.version}] => #{response.code} - #{request_time} s - body:\n#{response.body}") # for HTTParty
+      GlobalCollect.wire_logger.info("RESP [#{request.action} v#{request.version}] => #{response.response_code} - #{request_time} s - body:\n#{response.body}") # for Curl
 
-      base = GlobalCollect::Responses::Base.new(response.parsed_response, response.body)
+      # base = GlobalCollect::Responses::Base.new(response.parsed_response, response.body) # for HTTParty
+      base = GlobalCollect::Responses::Base.new(Hash.from_xml(response.body_str), response.body)
+
       raise "Malformed response to #{request.action} request! Body: '#{response.body}'" if base.malformed?
       request.suggested_response_mixins.each{|m| base.extend(m) } if add_mixins
+     
       base
     end
 

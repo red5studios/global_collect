@@ -27,6 +27,7 @@ extensibility in mind.
   s.add_dependency 'fixed_width'
   s.add_dependency 'fakeweb'
   s.add_dependency 'crack'
+  s.add_dependency 'curb'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rake'
